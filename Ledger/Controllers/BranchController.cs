@@ -1,21 +1,23 @@
 ﻿using Ledger.DB;
 using Ledger.DB.Models;
+using Ledger.Utility.GenericRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Ledger.Controllers
 {
     public class BranchController : Controller
     {
-        private readonly ApplicationDB dbcontext;
+        private readonly IGenericRepository<Branch> dbcontext;
 
-        public BranchController(ApplicationDB db)
+        public BranchController(IGenericRepository<Branch> db)
         {
             dbcontext = db;
         }
         public IActionResult Index()
         {
-            ViewBag.Branch = dbcontext.Branch.Where(b => b.Status == true).ToList();
+            ViewBag.Branch = dbcontext.GetAllAsync(x=>x.Status == true).Result;
             return View();
         }
 
@@ -23,35 +25,37 @@ namespace Ledger.Controllers
         [HttpPost]
         public IActionResult Create(Branch B)
         {
-            Branch Br = new Branch();
-            Br.Name = B.Name;
-            Br.Status = true;
-            Br.CreatedOn = DateTime.Now;
-            Br.CreatedBy = "Aqib";
-            Br.EditedOn = DateTime.Now;
-            Br.EditedBy = "Aqib";
-            dbcontext.Branch.Add(Br);
-            dbcontext.SaveChanges();
+            B.CreatedOn = DateTime.Now;
+            B.CreatedBy = "Aqib";
+            B.EditedOn = DateTime.Now;
+            B.EditedBy = "Aqib";
+            B.Status = true;
+
+            dbcontext.AddAsync(B);
+            
             return Json("Success !!!");
         }
 
         [HttpPost]
         public IActionResult GetBranch(int Id)
         {
-            var BranchData = dbcontext.Branch.Where(e => e.Id == Id).FirstOrDefault();
+            var BranchData = dbcontext.GetByIdAsync(Id).Result;
             return Json(BranchData);
         }
 
         [HttpPost]
         public IActionResult Update(Branch B)
         {
-            var BData = dbcontext.Branch.Where(e => e.Id == B.Id).FirstOrDefault();
-            BData.Name = B.Name;
-            BData.Status = true;
-            BData.EditedOn = DateTime.Now;
-            BData.EditedBy = "Aqib";
-            dbcontext.SaveChanges();
-            return Json("Success !!!");
+            B.Status = true;
+            B.EditedBy = "Aqib";
+            B.EditedOn = DateTime.Now;
+
+            var Result = dbcontext.UpdateAsync(B.Id, B).Result;
+            if (Result == true)
+            {
+                return Json("Updated !!!");
+            }
+            return Json("Error !!!");
         }
 
 
