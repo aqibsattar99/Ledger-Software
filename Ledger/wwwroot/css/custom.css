@@ -1,0 +1,45 @@
+﻿body {
+    background: #fff;
+    font-family: "Comfortaa";
+    font-weight: 400;
+}
+#layoutSidenav_nav nav a {
+    font-size: 16px !important;
+}
+
+table{
+    width: 100% !important;
+}
+
+.close{
+    font-size: 20px !important;
+}
+
+.breadcrumb {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    background: #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+.breadcrumb li{
+    color: black;
+}
+
+#modal-issue label{
+    padding-top: 5px;
+}
+
+.dashboard-info a{
+    text-decoration: none !important;
+}
+
+.nav-link {
+    bsackground: #fff !important;
+}
+
+.activenav {
+    background: #fff !important;
+    color: #000 !important;
+}
+

@@ -1,0 +1,420 @@
+﻿@model IEnumerable<Ledger.DB.VModels.VIssue>
+
+<div class="container-fluid px-4">
+
+
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Issued Equipments</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="card mb-4 ">
+
+
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6" style="text-align: right">
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#modal-issue"> <i class="fas fa-plus"></i> Add </button>
+                            <button class="btn btn-success"><i class="fa fa-print"></i> Print</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <table class="table table-responsive table-bordered" id="tblequipments">
+                        <thead>
+                            <tr>
+                                <th><center> No.</center> </th>
+                                <th> Equipment </th>
+                                <th> Branch </th>
+                                <th> Condition</th>
+                                <th> SerialNo</th>
+                                <th> Qty</th>
+                                <th> IssueVoucher</th>
+                                <th> IssueTo</th>
+                                <th> Recevied By</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var SN = 0;
+                            }
+                            @foreach (var i in Model)
+                            {
+                                SN++;
+                                <tr>
+
+                                    <td id="@i.Id" style="text-align:center;">@SN</td>
+                                    <td>@i.EquipmentName</td>
+                                    <td>@i.BranchName</td>
+                                    <td>@i.Condition</td>
+                                    <td>@i.SerialNo</td>
+                                    <td>@i.Qty</td>
+                                    <td>@i.IssueVoucher</td>
+                                    <td>@i.IssueTo</td>
+                                    <td>@i.ReceviedBy</td>
+                                   
+                                    <td>
+                                        <a class="btn btn-warning issue-edit-btn"><i class="fa fa-edit"></i> </a>
+                                        <a class="btn btn-success issue-detail-btn"><i class="fa fa-list"></i> </a>
+                                        </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal Add -->
+<div class="modal fade" id="modal-issue" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Issue Equipment</h5>
+                <button class="btn-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-floating mb-3 row">
+                    <div class="col-md-12">
+                        <div class="alert alert-warning alert-dismissible fade show d-none" id="AlertWarning" role="alert">
+                            Please Fill all Fields !!!
+                            <button type="button" class="btn-close" id="WarningClose">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="alert alert-danger alert-dismissible fade show d-none" id="AlertError" role="alert">
+                            System Error !!!
+                            <button type="button" class="btn-close" id="ErrorClose">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="alert alert-success alert-dismissible fade show d-none" id="AlertSuccess" role="alert">
+                            Equipment Added Successfully !!!
+                            <button type="button" class="btn-close" id="SuccessClose">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <!-- Row 1 -->
+                    <div class="col-md-6">
+                        <label> Equipment</label>
+                        <select class="form-control" id="equipment">
+                            <option value="">Select</option>
+                            @foreach (var e in ViewBag.Equipment)
+                            {
+                                <option value="@e.Id">@e.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                     <div class="col-md-6">
+                        <label> Equipment</label>
+                        <select class="form-control" id="branch">
+                            <option value="">Select</option>
+                            @foreach (var b in ViewBag.Branch)
+                            {
+                                <option value="@b.Id">@b.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="col-md-6">
+                        <label> Condition </label>
+                        <select class="form-control" id="condition">
+                            <option value="SVC">SVC</option>
+                            <option value="PWS">PWS</option>
+                            <option value="US">US</option>
+                        </select> 
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <label> Serial No </label>
+                       <input class="form-control" id="serialno"/>
+                    </div>
+                    <!-- Row 3 -->
+                    <div class="col-md-6">
+                        <label> Qty </label>
+                        <input class="form-control" id="qty" />
+                    </div>
+                     <div class="col-md-6">
+                        <label> IssueDate </label>
+                        <input type="date" class="form-control" id="issuedate" />
+                    </div> 
+                    
+                    <!-- Row 4 -->
+                    <div class="col-md-6">
+                        <label> Issue Voucher </label>
+                        <input class="form-control" id="issuevoucher" />
+                    </div>
+                     <div class="col-md-6">
+                        <label> Min Sheet No / RV </label>
+                        <input  class="form-control" id="minsheetno" />
+                    </div>
+                    <!-- Row 5 -->
+                    <div class="col-md-6">
+                        <label> Issue To </label>
+                        <input class="form-control" id="issueto" />
+                    </div>
+                    <div class="col-md-6">
+                        <label> Recevied By </label>
+                        <input  class="form-control" id="receviedby" />
+                    </div>
+                    <!-- Row 6 -->
+                    <div class="col-md-12">
+                        <label> Details  </label>
+                        <textarea class="form-control" id="details"></textarea>
+                    </div>
+
+
+
+
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-issue-add">Save </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- Modal Edit -->
+<div class="modal fade" id="modal-issue-edit" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Edit Equipment</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+
+
+            </div>
+            <div class="modal-body">
+
+                <div class="form-floating mb-3 row">
+                    <div class="col-md-12">
+                        <div class="alert alert-warning alert-dismissible fade show d-none" id="AlertWarning" role="alert">
+                            Please Fill all Fields !!!
+                            <button type="button" class="btn-close" id="WarningClose">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="alert alert-danger alert-dismissible fade show d-none" id="AlertError" role="alert">
+                            System Error !!!
+                            <button type="button" class="btn-close" id="ErrorClose">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="alert alert-success alert-dismissible fade show d-none" id="AlertSuccess" role="alert">
+                            Equipment Updated Successfully !!!
+                            <button type="button" class="btn-close" id="SuccessClose">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+
+
+                    </div>
+
+
+                    <!-- Row 1 -->
+                    <div class="col-md-6">
+                        <label> Equipment</label>
+                        <select class="form-control" id="equipment">
+                            <option value="">Select</option>
+                            @foreach (var e in ViewBag.Equipment)
+                            {
+                                <option value="@e.Id">@e.Name</option>
+                            }
+                        </select>
+                        <input class="form-control" id="Issueid" type="hidden" placeholder="" />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label> Equipment</label>
+                        <select class="form-control" id="branch">
+                            <option value="">Select</option>
+                            @foreach (var b in ViewBag.Branch)
+                            {
+                                <option value="@b.Id">@b.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="col-md-6">
+                        <label> Condition </label>
+                        <select class="form-control" id="condition">
+                            <option value="SVC">SVC</option>
+                            <option value="PWS">PWS</option>
+                            <option value="US">US</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <label> Serial No </label>
+                        <input class="form-control" id="serialno" />
+                    </div>
+                    <!-- Row 3 -->
+                    <div class="col-md-6">
+                        <label> Qty </label>
+                        <input class="form-control" id="qty" />
+                    </div>
+                    <div class="col-md-6">
+                        <label> IssueDate </label>
+                        <input type="date" class="form-control" id="issuedate" />
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="col-md-6">
+                        <label> Issue Voucher </label>
+                        <input class="form-control" id="issuevoucher" />
+                    </div>
+                    <div class="col-md-6">
+                        <label> Min Sheet No / RV </label>
+                        <input class="form-control" id="minsheetno" />
+                    </div>
+                    <!-- Row 5 -->
+                    <div class="col-md-6">
+                        <label> Issue To </label>
+                        <input class="form-control" id="issueto" />
+                    </div>
+                    <div class="col-md-6">
+                        <label> Recevied By </label>
+                        <input class="form-control" id="receviedby" />
+                    </div>
+                    <!-- Row 6 -->
+                    <div class="col-md-12">
+                        <label> Details  </label>
+                        <textarea class="form-control" id="details"></textarea>
+                    </div>
+
+
+
+
+
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-issue-edit">Update </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Details -->
+<div class="modal fade" id="modal-issue-detail" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title">Issue Equipment Detail</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+
+
+                   
+                    <table class="table table-bordered">
+                        <tr>
+                            <span id="print-id" style="display: none;"></span>
+                            <td>Equipment</td>
+                            <td id="equipment"></td>
+                            </tr>
+                            <tr>
+                                <td>Branch</td>
+                            <td id="branch"></td>
+                        </tr>
+                            <tr>
+                                <td>Condition</td>
+                            <td id="condition"></td>
+                            </tr>
+                            <tr>
+                                <td> Serial No</td>
+                            <td id="serialno"></td>
+                            </tr>
+                            <tr>
+                            <td> Qty </td>
+                            <td id="qty"></td>
+                     </tr>
+                            <tr>
+                            <td> IssueDate </td>
+                            <td id="issuedate"></td>
+                        </tr>
+                            <tr>
+                            <td> Issue Voucher </td>
+                            <td id="issuevoucher"></td>
+                        </tr>
+                            <tr>
+                            <td> Min Sheet No / RV </td>
+                            <td id="minsheetno"></td>
+                        </tr>
+                            <tr>
+                            <td> Issue To </td>
+                            <td id="issueto"></td>
+                        </tr>
+                            <tr>
+                            <td> Recevied By </td>
+                            <td id="receviedby"></td>
+                        </tr>
+                            <tr>
+                            <td> Created By </td>
+                            <td id="details"></td>
+                        </tr>
+                      
+                    </table>
+
+
+              
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btn-issue-print"><i class="fa fa-print"></i> Print </button>
+            </div>
+        </div>
+    </div>
+</div>
+

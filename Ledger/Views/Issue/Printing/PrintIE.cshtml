@@ -1,0 +1,72 @@
+﻿@model Ledger.DB.VModels.VIssue
+@{
+    Layout = null; // Disable layout for this view
+}
+<html>
+<head>
+
+    <link href="~/css/printcss.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="card-header">
+        <h2><i class="mdi mdi-book-open mdi-18px"></i>Issue Equipment Detail</h2>
+    </div>
+    <div class="card-body">
+
+         <table class=" pat-details-popup" style="width: 100% !important; border-bottom: 2px solid #ddd;">
+
+        <tr>
+
+        <td>Equipment</td>
+        <td> @Model.EquipmentName </td>
+        </tr>
+        <tr>
+        <td>Branch</td>
+        <td> @Model.BranchName</td>
+        </tr>
+        <tr>
+        <td>Condition</td>
+        <td> @Model.Condition</td>
+        </tr>
+        <tr>
+        <td> Serial No</td>
+        <td> @Model.SerialNo</td>
+        </tr>
+        <tr>
+        <td> Qty </td>
+        <td> @Model.Qty</td>
+        </tr>
+        <tr>
+        <td> IssueDate </td>
+        <td> @Model.IssueDate</td>
+        </tr>
+        <tr>
+        <td> Issue Voucher </td>
+        <td> @Model.IssueVoucher</td>
+        </tr>
+        <tr>
+        <td> Min Sheet No / RV </td>
+        <td> @Model.MinSheetNo</td>
+        </tr>
+        <tr>
+        <td> Issue To </td>
+        <td> @Model.IssueTo</td>
+        </tr>
+        <tr>
+        <td> Recevied By </td>
+        <td> @Model.ReceviedBy</td>
+        </tr>
+        <tr>
+        <td> Created By </td>
+        <td> @Model.CreatedBy</td>
+        </tr>
+
+        </table>
+
+       
+
+
+    </div>
+
+</body>
+</html>
