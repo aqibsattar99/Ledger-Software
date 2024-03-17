@@ -1,0 +1,87 @@
+﻿@model Ledger.DB.Models.IssueVM
+@{
+    Layout = null; // Disable layout for this view
+}
+<html>
+<head>
+
+    <style>
+        body {
+           background: white;
+            font-family: sans-serif;
+        }
+
+        .Issue-Table tr td {
+            border: 2px solid black;
+            padding: 10px;
+            width: 50%;
+
+        }
+    </style>
+
+</head>
+<body>
+    <div class="card-header" style="text-align:center;">
+        <h2 style="text-align: center;"><i class="mdi mdi-book-open mdi-18px"></i> Equipment Issue Voucher</h2>
+        <h4 style="text-decoration:underline;">IT Branch</h4>
+    </div>
+    <div class="card-body">
+
+        <table class="Issue-Table" style="width: 100% !important;">
+
+        <tr>
+
+        <td>Equipment Name</td>
+        <td> @Model.EquipmentName </td>
+        </tr>
+        <tr>
+        <td>Issue Branch</td>
+        <td> @Model.BranchName Branch</td>
+        </tr>
+        <tr>
+        <td>Condition</td>
+        <td> @Model.Condition</td>
+        </tr>
+        <tr>
+        <td> Serial No</td>
+        <td> @Model.SerialNo</td>
+        </tr>
+        <tr>
+        <td> Qty </td>
+        <td> @Model.Qty</td>
+        </tr>
+        <tr>
+        <td> IssueDate </td>
+        <td> @Model.IssueDate</td>
+        </tr>
+        <tr>
+        <td> Issue Voucher </td>
+        <td> @Model.IssueVoucher</td>
+        </tr>
+        
+        <tr>
+        <td> Issue To </td>
+        <td> @Model.IssueTo</td>
+        </tr>
+        <tr>
+        <td> Recevied By </td>
+        <td> @Model.ReceviedBy</td>
+        </tr>
+       
+        </table>
+
+
+
+        <table class="sign-table" style="width: 100% !important; margin-top: 100px;">
+
+            <tr>
+
+                <td>AD IT : ________________________________</td>
+                <td> Dir  @Model.BranchName :________________________________</td>
+            </tr>
+        </table>
+
+    </div>
+
+</body>
+</html>

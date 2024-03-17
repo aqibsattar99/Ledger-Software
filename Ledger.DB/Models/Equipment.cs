@@ -15,6 +15,8 @@ namespace Ledger.DB.Models
         
         public string? Name { get; set; }
 
+        public string? Specifications { get; set; }
+
         public bool? Status { get; set; }
         public DateTime? CreatedOn { get; set; }
         public string? CreatedBy { get; set; }

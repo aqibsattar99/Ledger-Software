@@ -18,6 +18,5 @@ namespace Ledger.DB
         public DbSet<Equipment> Equipment { get; set; }
         public DbSet<Issue> Issue { get; set; }
         public DbSet<Users> Users { get; set; }
-
     }
 }

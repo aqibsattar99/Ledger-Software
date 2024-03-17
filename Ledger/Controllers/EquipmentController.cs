@@ -25,6 +25,7 @@ namespace Ledger.Controllers
         {
             Equipment Equip = new Equipment();
             Equip.Name = E.Name;
+            Equip.Specifications = E.Specifications;
             Equip.Status = true;
             Equip.CreatedOn = DateTime.Now;
             Equip.CreatedBy = "Aqib";
@@ -41,17 +42,34 @@ namespace Ledger.Controllers
             var EqptData = dbcontext.Equipment.Where(e => e.Id == Id).FirstOrDefault();
             return Json(EqptData);
         }
+        [HttpPost]
+        public IActionResult GetAll()
+        
+        {
+           
+
+            var EqptData = dbcontext.Equipment.Where(e => e.Status == true)
+                                       .OrderByDescending(e => e.CreatedOn)
+                                       .ToList();
+
+
+            return Json(new { data = EqptData });
+
+
+           
+        }
 
         [HttpPost]
         public IActionResult Update(Equipment E)
         {
             var Equip = dbcontext.Equipment.Where(e => e.Id == E.Id).FirstOrDefault();
             Equip.Name = E.Name;
+            Equip.Specifications = E.Specifications;
             Equip.Status = true;
             Equip.EditedOn = DateTime.Now;
             Equip.EditedBy = "Aqib";
             dbcontext.SaveChanges();
-            return Json("Success !!!");
+            return Json("Updated !!!");
         }
 
 

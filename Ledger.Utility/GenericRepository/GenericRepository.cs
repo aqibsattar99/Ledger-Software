@@ -55,11 +55,22 @@ namespace Ledger.Utility.GenericRepository
 
         public async Task<bool> UpdateAsync(int Id, T entity)
         {
-            var chk = await entities.FindAsync(Id);
-            if (chk == null)
+            var existingEntity = await entities.FindAsync(Id);
+            if (existingEntity == null)
                 return false;
 
-            dbContext.Entry(chk).CurrentValues.SetValues(entity);
+            var entityType = typeof(T);
+            var properties = entityType.GetProperties();
+
+            foreach (var property in properties)
+            {
+                var newValue = property.GetValue(entity);
+                if (newValue != null)
+                {
+                    property.SetValue(existingEntity, newValue);
+                }
+            }
+
             await dbContext.SaveChangesAsync();
 
             return true;

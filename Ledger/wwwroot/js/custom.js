@@ -1,3 +1,6 @@
+//-------------------------------
+// Website JS Code
+//-------------------------------
 $(document).ready(function () {
     // Toggle Navigation
     const sidebarToggle = $('#sidebarToggle');
@@ -8,71 +11,91 @@ $(document).ready(function () {
             localStorage.setItem('sb|sidebar-toggle', $('body').hasClass('sb-sidenav-toggled'));
         });
     }
-    // Datatables 
-    $('#dtequipment').DataTable();
-    $('#tblequipments').DataTable();
+
+
+    $('#equipmentsform #equipmentx').select2({});
+    $('#equipmentsform #branchx').select2({});
+
+    $('#modal-issue-edit #equipment').select2({
+        dropdownParent: $('#modal-issue-edit')
+    });
+    $('#modal-issue-edit #branch').select2({
+        dropdownParent: $('#modal-issue-edit')
+    });
+
+
+
+   
 
 });
 
-//-------------------------------
-// Equipment JQuery Code
-//-------------------------------
-$("#btn-equipment-add").click(function () {
-   
-    var Name = $('#modal-equipment #name').val();
-  
-    if (Name == "") {
 
-        $('#modal-equipment #AlertWarning').removeClass('d-none');
-        setTimeout(function () { $('#modal-equipment #AlertWarning').addClass('d-none'); }, 5000);
-        $("#modal-equipment #WarningClose").click(function () { $('#modal-equipment #AlertWarning').addClass('d-none'); });
+//-------------------------------
+// Equipment JS Code
+//-------------------------------
+$(document).ready(function () {
+
+    $(".btn-close").click(function () {
+        $(".modal").modal('hide');
+    });
+
+    var currentDate = new Date().toISOString().slice(0, 10);
+    $('input[type="date"]').val(currentDate);
+
+
+    // Insert Data
+
+    $(document).on('click', '#btn-equipments-add', function () {
+    var Name = $('#name').val();
+    var Specs = $('#specs').val();
+
+    if (Name == "" || Specs == "") {
+
+        $("#notify").text("Fill Empty Fields !!!");
+        $("#notify").show();
+        setTimeout(function () { $("#notify").hide(); }, 1500);
 
     } else {
-
-        $("#btn-equipment-add").text("Saving...");
+        $("#btn-equipments-add").text("Saving...");
         $.ajax({
             url: "/Equipment/Create",
             type: "POST",
             dataType: 'json',
             data: {
-                Name: Name
+                Name: Name,
+                Specifications: Specs
             },
             success: function (response) {
 
-                $("#modal-equipment input").val("");
-                $("#modal-equipment select").val("");
-                $("#modal-equipment textarea").val("");
+                $("input").val("");
+                $("select").val("");
+                $("textarea").val("");
 
-                // Alert Code
-                $('#modal-equipment #AlertSuccess').removeClass('d-none');
-                setTimeout(function () { $('#modal-equipment #AlertSuccess').addClass('d-none'); }, 3000);
-                $("#modal-equipment #SuccessClose").click(function () { $('#modal-equipment #AlertSuccess').addClass('d-none'); });
+                // Alert
+                $("#notify").text(response);
+                $("#notify").show();
+                setTimeout(function () { $("#notify").hide(); }, 1500);
+
+                // Refresh Table
+                $('#tblequipments').DataTable().ajax.reload();
 
                 // Button Text Change
                 $("#btn-equipment-add").text("Save");
             },
             error: function (xhr, status, error) {
-
-                $('#modal-equipment #AlertError').removeClass('d-none');
-                setTimeout(function () { $('#modal-equipment #AlertError').addClass('d-none'); }, 5000);
-                $("#modal-equipment #ErroClose").click(function () { $('#modal-equipment .AlertError').addClass('d-none'); });
-
+                alert("Server Error !!!");
             }
         });
     }
 });
 
+    // Get Update Data
 
-//----------------
-// Fill Edit Form
-//----------------
-$(".equip-edit-btn").click(function (e) {
-    e.preventDefault();
-    var currentRow = $(this).closest("tr");
-    var Id = currentRow.find("td:first").attr("Id");
-    
+    $(document).on('click', '.equip-edit-btn', function () {
+    var Id = $(this).data('id');
+
     $.ajax({
-       
+
         url: "/Equipment/GetEquipment",
         type: "POST",
         dataType: 'json',
@@ -83,8 +106,8 @@ $(".equip-edit-btn").click(function (e) {
 
             $('#modal-equipment-edit #equipid').val(Data.id);
             $('#modal-equipment-edit #name').val(Data.name);
-           
-            
+            $('#modal-equipment-edit #specs').val(Data.specifications);
+
             // Load or Show Modal Popup
             $('#modal-equipment-edit').modal('show');
 
@@ -95,21 +118,19 @@ $(".equip-edit-btn").click(function (e) {
     });
 });
 
+    //Update Equipment
 
-//------------------
-// Update Edit Form
-//------------------
-$("#btn-equipment-edit").click(function () {
-
+    $(document).on('click', '#btn-equipments-edit', function () {
     var Id = $('#modal-equipment-edit #equipid').val();
     var Name = $('#modal-equipment-edit #name').val();
+        var Specs = $('#modal-equipment-edit #specs').val();
 
+        if (Name == "" || Specs == "") {
 
-    if (Name == "" ) {
+        $("#modal-equipment-edit #notify").text("Fill Empty Fields !!!");
+        $("#modal-equipment-edit #notify").show();
+        setTimeout(function () { $("#modal-equipment-edit #notify").hide(); }, 1500);
 
-        $('#modal-equipment-edit #AlertWarning').removeClass('d-none');
-        setTimeout(function () { $('#modal-equipment-edit #AlertWarning').addClass('d-none'); }, 5000);
-        $("#modal-equipment-edit #WarningClose").click(function () { $('#modal-equipment-edit #AlertWarning').addClass('d-none'); });
 
     } else {
 
@@ -122,24 +143,21 @@ $("#btn-equipment-edit").click(function () {
             data: {
                 Id: Id,
                 Name: Name,
-               
+                Specifications: Specs
             },
             success: function (response) {
                 $("#btn-equipment-edit").text("Update");
-                // Alert Code
-                $('#modal-equipment-edit #AlertSuccess').removeClass('d-none');
+
+                // Alert
+                $("#modal-equipment-edit #notify").text(response);
+                $("#modal-equipment-edit #notify").show();
+                setTimeout(function () { $("#modal-equipment-edit #notify").hide(); }, 1500);
+
+                // Refresh Table
+                $('#tblequipments').DataTable().ajax.reload();
                 setTimeout(function () {
-                    $('#modal-equipment-edit #AlertSuccess').addClass('d-none');
-                }, 3000);
-                $("#modal-equipment-edit #SuccessClose").click(function () { $('#modal-equipment-edit #AlertSuccess').addClass('d-none'); });
-
-
-                setTimeout(function () {
-                    $("#modal-equipment-edit").modal('hide');
-                }, 3000);
-                
-
-                
+                    $('#modal-equipment-edit').modal('hide');
+                }, 1500);
             },
             error: function (xhr, status, error) {
                 alert("Error !!!");
@@ -148,77 +166,68 @@ $("#btn-equipment-edit").click(function () {
     }
 });
 
-$('#modal-equipment-edit .btn-close').click(function () {
-
-    $('#modal-equipment-edit').modal('hide');
-
 });
 
 
-
-
-
-
-
 //-------------------------------
-// Add Branch Code
+// Branch JS Code
 //-------------------------------
-$("#btn-branch-add").click(function () {
+$(document).ready(function () {
 
-    var Name = $('#modal-branch #name').val();
-    var Status = $('#modal-branch #status').val();
 
-    if (Name == "" || Status == "") {
+    // Add Branch Data
+   
+    $(document).on('click', '#btn-branch-add', function () {
+        var Name = $('#name').val();
+    
 
-        $('#modal-branch #AlertWarning').removeClass('d-none');
-        setTimeout(function () { $('#modal-branch #AlertWarning').addClass('d-none'); }, 5000);
-        $("#modal-branch #WarningClose").click(function () { $('#modal-branch #AlertWarning').addClass('d-none'); });
+        if (Name == "") {
 
-    } else {
+            $("#notify").text("Fill Empty Fields !!!");
+            $("#notify").show();
+            setTimeout(function () { $("#notify").hide(); }, 1500);
 
-        $("#btn-branch-add").text("Saving...");
-        $.ajax({
-            url: "/Branch/Create",
-            type: "POST",
-            dataType: 'json',
-            data: {
-                Name: Name,
-                Status: Status
-            },
-            success: function (response) {
+        } else {
 
-                $("#modal-branch input").val("");
-                $("#modal-branch select").val("");
-                $("#modal-branch textarea").val("");
+            $("#btn-branch-add").text("Saving...");
+            $.ajax({
+                url: "/Branch/Create",
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    Name: Name,
+                },
+                success: function (response) {
 
-                // Alert Code
-                $('#modal-branch #AlertSuccess').removeClass('d-none');
-                setTimeout(function () { $('#modal-branch #AlertSuccess').addClass('d-none'); }, 3000);
-                $("#modal-branch #SuccessClose").click(function () { $('#modal-branch #AlertSuccess').addClass('d-none'); });
+                    $("input").val("");
+                    $("select").val("");
+                    $("textarea").val("");
 
-                // Button Text Change
-                $("#btn-branch-add").text("Save");
-            },
-            error: function (xhr, status, error) {
+                    // Alert
+                    $("#notify").text(response);
+                    $("#notify").show();
+                    setTimeout(function () { $("#notify").hide(); }, 1500);
+                
+                    // Refresh Table
+                    $('#tblbranches').DataTable().ajax.reload();
 
-                $('#modal-branch #AlertError').removeClass('d-none');
-                setTimeout(function () { $('#modal-branch #AlertError').addClass('d-none'); }, 5000);
-                $("#modal-branch #ErroClose").click(function () { $('#modal-branch .AlertError').addClass('d-none'); });
+                    // Button Text Change
+                    $("#btn-branch-add").text("Save");
+                },
+                error: function (xhr, status, error) {
 
-            }
-        });
-    }
+                    alert("Error!!!");
+
+                }
+            });
+        }
 });
 
 
+    // Get Branch Data
+    $(document).on('click', '.branch-edit-btn', function () {
 
-//-----------------------
-// Fill Branch Edit Form
-//-----------------------
-$(".branch-edit-btn").click(function (e) {
-    e.preventDefault();
-    var currentRow = $(this).closest("tr");
-    var Id = currentRow.find("td:first").attr("Id");
+        var Id = $(this).data('id');
 
     $.ajax({
 
@@ -232,7 +241,7 @@ $(".branch-edit-btn").click(function (e) {
 
             $('#modal-branch-edit #branchid').val(Data.id);
             $('#modal-branch-edit #name').val(Data.name);
-            $('#modal-branch-edit #status').val(Data.status);
+           
 
             // Load or Show Modal Popup
             $('#modal-branch-edit').modal('show');
@@ -244,22 +253,17 @@ $(".branch-edit-btn").click(function (e) {
     });
 });
 
+    // Update Branch Date
+  
+    $(document).on('click', '#btn-branch-edit', function () {
+        var Id = $('#modal-branch-edit #branchid').val();
+        var Name = $('#modal-branch-edit #name').val();
+   
+    if (Name == "") {
 
-//------------------
-// Update Branch Edit Form
-//------------------
-$("#btn-branch-edit").click(function () {
-
-    var Id = $('#modal-branch-edit #branchid').val();
-    var Name = $('#modal-branch-edit #name').val();
-    var Status = $('#modal-branch-edit #status').val();
-
-
-    if (Name == "" || Status == "") {
-
-        $('#modal-branch-edit #AlertWarning').removeClass('d-none');
-        setTimeout(function () { $('#modal-branch-edit #AlertWarning').addClass('d-none'); }, 5000);
-        $("#modal-branch-edit #WarningClose").click(function () { $('#modal-branch-edit #AlertWarning').addClass('d-none'); });
+        $("#modal-branch-edit #notify").text("Fill Empty Fields !!!");
+        $("#modal-branch-edit #notify").show();
+        setTimeout(function () { $("#modal-branch-edit #notify").hide(); }, 1500);
 
     } else {
 
@@ -272,22 +276,21 @@ $("#btn-branch-edit").click(function () {
             data: {
                 Id: Id,
                 Name: Name,
-                Status: Status
+
             },
             success: function (response) {
                 $("#btn-branch-edit").text("Update");
-                // Alert Code
-                $('#modal-branch-edit #AlertSuccess').removeClass('d-none');
+
+                $("#modal-branch-edit #notify").text(response);
+                $("#modal-branch-edit #notify").show();
                 setTimeout(function () {
-                    $('#modal-branch-edit #AlertSuccess').addClass('d-none');
-                }, 3000);
-                $("#modal-branch-edit #SuccessClose").click(function () { $('#modal-branch-edit #AlertSuccess').addClass('d-none'); });
+                    $("#modal-branch-edit #notify").hide();
+                    $('#modal-branch-edit').modal('hide');
+                }, 1500);
 
-
-                setTimeout(function () {
-                    $("#modal-branch-edit").modal('hide');
-                }, 3000);
-
+                // Refresh Table
+                $('#tblbranches').DataTable().ajax.reload();
+               
             },
             error: function (xhr, status, error) {
                 alert("Error !!!");
@@ -295,50 +298,47 @@ $("#btn-branch-edit").click(function () {
         });
     }
 });
-
-$('#modal-branch-edit .btn-close').click(function () {
-
-    $('#modal-branch-edit').modal('hide');
+   
+   
 
 });
 
 
 
-
-
-
-
-
 //-------------------------------
-// Add Issue Code
+// Issue JS Code
 //-------------------------------
-$("#btn-issue-add").click(function () {
-    
-    var equipmentid = $('#modal-issue #equipment').val();
-    var branchid = $('#modal-issue #branch').val();
-    var condition = $('#modal-issue #condition').val();
-    var serialno = $('#modal-issue #serialno').val();
-    var qty = $('#modal-issue #qty').val();
-    var issuedate = $('#modal-issue #issuedate').val();
-    var issuevoucher = $('#modal-issue #issuevoucher').val();
-    var minsheetno = $('#modal-issue #minsheetno').val();
-    var issueto = $('#modal-issue #issueto').val();
-    var receviedby = $('#modal-issue #receviedby').val();
-    var details = $('#modal-issue #details').val();
 
-    if (equipmentid == "" || branchid == "" || condition == "" || serialno == "" || qty == "" || issuedate == "" || issuevoucher == "" || minsheetno == "" || issueto == "" || receviedby == "" || details == "" )
+$(document).ready(function () {
+
+    // Add Issue Data
+    $(document).on('click', '#btn-gissue-add', function () {
+        var equipmentid = $('#equipmentx').val();
+    var branchid = $('#branchx').val();
+    var condition = $('#condition').val();
+    var serialno = $('#serialno').val();
+    var qty = $('#qty').val();
+    var issuedate = $('#issuedate').val();
+    var issuevoucher = $('#issuevoucher').val();
+    var minsheetno = $('#minsheetno').val();
+    var issueto = $('#issueto').val();
+    var receviedby = $('#receviedby').val();
+    var remarks = $('#details').val();
+
+    if (equipmentid == "" || branchid == "" || condition == "" || serialno == "" || qty == "" || issuedate == "" || issuevoucher == "" || minsheetno == "" || issueto == "" || receviedby == "" || remarks == "" )
     { 
        
-        $('#modal-issue #AlertWarning').removeClass('d-none');
-        setTimeout(function () { $('#modal-issue #AlertWarning').addClass('d-none'); }, 5000);
-        $("#modal-issue #WarningClose").click(function () { $('#modal-issue #AlertWarning').addClass('d-none'); });
+        $("#notify").text("Fill Empty Fields !!!");
+        $("#notify").show();
+        setTimeout(function () { $("#notify").hide(); }, 1500);
+
 
     } 
     else {
 
-        $("#btn-issue-add").text("Saving...");
+        $("#btn-gissue-add").text("Saving...");
         $.ajax({
-            url: "/Issue/Create",
+            url: "/GeneralIssue/Create",
             type: "POST",
             dataType: 'json',
             data: {
@@ -352,7 +352,7 @@ $("#btn-issue-add").click(function () {
                 issuevoucher: issuevoucher,
                 minsheetno: minsheetno,
                 receviedby: receviedby,
-                details: details
+                remarks: remarks
             },
             success: function (response) {
 
@@ -360,19 +360,21 @@ $("#btn-issue-add").click(function () {
                 $("#modal-issue select").val("");
                 $("#modal-issue textarea").val("");
 
-                // Alert Code
-                $('#modal-issue #AlertSuccess').removeClass('d-none');
-                setTimeout(function () { $('#modal-issue #AlertSuccess').addClass('d-none'); }, 3000);
-                $("#modal-issue #SuccessClose").click(function () { $('#modal-issue #AlertSuccess').addClass('d-none'); });
+                $("#notify").text(response);
+                $("#notify").show();
+                setTimeout(function () { $("#notify").hide(); }, 1500);
 
                 // Button Text Change
-                $("#btn-issue-add").text("Save");
+                $("#btn-gissue-add").text("Save");
+
+
+                // Refresh Table
+                $('#tblissueequipments').DataTable().ajax.reload();
+
             },
             error: function (xhr, status, error) {
 
-                $('#modal-issue #AlertError').removeClass('d-none');
-                setTimeout(function () { $('#modal-issue #AlertError').addClass('d-none'); }, 5000);
-                $("#modal-issue #ErroClose").click(function () { $('#modal-issue .AlertError').addClass('d-none'); });
+                alert("Error!!!");
 
             }
         });
@@ -381,18 +383,14 @@ $("#btn-issue-add").click(function () {
 });
 
 
+    // Get Issue Data
+    $(document).on('click', '.issue-edit-btn', function () {
+       
+        var Id = $(this).data('id');
+       
+        $.ajax({
 
-//-----------------------
-// Fill Branch Edit Form
-//-----------------------
-$(".issue-edit-btn").click(function (e) {
-    e.preventDefault();
-    var currentRow = $(this).closest("tr");
-    var Id = currentRow.find("td:first").attr("Id");
-    alert(Id);
-    $.ajax({
-
-        url: "/Issue/GetIssue",
+        url: "/GeneralIssue/GetIssue",
         type: "POST",
         dataType: 'json',
         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -411,7 +409,7 @@ $(".issue-edit-btn").click(function (e) {
             $('#modal-issue-edit #minsheetno').val(Data.minSheetNo);
             $('#modal-issue-edit #issueto').val(Data.issueTo);
             $('#modal-issue-edit #receviedby').val(Data.receviedBy);
-            $('#modal-issue-edit #details').val(Data.details);
+            $('#modal-issue-edit #remarks').val(Data.remarks);
 
             // Load or Show Modal Popup
             $('#modal-issue-edit').modal('show');
@@ -421,39 +419,41 @@ $(".issue-edit-btn").click(function (e) {
             alert("Error !!!");
         }
     });
-});
+    
+
+    });
 
 
-//------------------
-// Update Issue Edit Form
-//------------------
-$("#btn-issue-edit").click(function () {
-
-    var Id = $('#modal-issue-edit #Issueid').val();
-    var equipmentid = $('#modal-issue-edit #equipment').val();
-    var branchid = $('#modal-issue-edit #branch').val();
-    var condition = $('#modal-issue-edit #condition').val();
-    var serialno = $('#modal-issue-edit #serialno').val();
-    var qty = $('#modal-issue-edit #qty').val();
-    var issuedate = $('#modal-issue-edit #issuedate').val();
-    var issuevoucher = $('#modal-issue-edit #issuevoucher').val();
-    var minsheetno = $('#modal-issue-edit #minsheetno').val();
-    var issueto = $('#modal-issue-edit #issueto').val();
-    var receviedby = $('#modal-issue-edit #receviedby').val();
-    var details = $('#modal-issue-edit #details').val();
+    // Update Issue Data
+    $(document).on('click', '#btn-gissue-edit', function () {
 
 
-    if (equipmentid == "" || branchid == "" || condition == "" || serialno == "" || qty == "" || issuedate == "" || issuevoucher == "" || minsheetno == "" || issueto == "" || receviedby == "" || details == "") {
+        var Id = $('#modal-issue-edit #Issueid').val();
+        var equipmentid = $('#modal-issue-edit #equipment').val();
+        var branchid = $('#modal-issue-edit #branch').val();
+        var condition = $('#modal-issue-edit #condition').val();
+        var serialno = $('#modal-issue-edit #serialno').val();
+        var qty = $('#modal-issue-edit #qty').val();
+        var issuedate = $('#modal-issue-edit #issuedate').val();
+        
+        var minsheetno = $('#modal-issue-edit #minsheetno').val();
+        var issueto = $('#modal-issue-edit #issueto').val();
+        var receviedby = $('#modal-issue-edit #receviedby').val();
+        var remarks = $('#modal-issue-edit #remarks').val();
 
-        $('#modal-issue-edit #AlertWarning').removeClass('d-none');
-        setTimeout(function () { $('#modal-issue-edit #AlertWarning').addClass('d-none'); }, 5000);
-        $("#modal-issue-edit #WarningClose").click(function () { $('#modal-issue-edit #AlertWarning').addClass('d-none'); });
+
+    if (equipmentid == "" || branchid == "" || condition == "" || serialno == "" || qty == "" || issuedate == "" || issuevoucher == "" || minsheetno == "" || issueto == "" || receviedby == "" || remarks == "") {
+
+        $("#notify").text("Fill Empty Fields !!!");
+        $("#notify").show();
+        setTimeout(function () { $("#notify").hide(); }, 1500);
 
     } else { 
 
-        $("#btn-issue-edit").text("Updating...");
+        $("#btn-gissue-edit").text("Updating...");
+
         $.ajax({
-            url: "/Issue/Update",
+            url: "/GeneralIssue/Update",
             type: "POST",
             dataType: 'json',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -466,24 +466,21 @@ $("#btn-issue-edit").click(function () {
                 qty: qty,
                 issuedate: issuedate,
                 issueto: issueto,
-                issuevoucher: issuevoucher,
+                
                 minsheetno: minsheetno,
                 receviedby: receviedby,
-                details: details
+                remarks: remarks
             },
             success: function (response) {
-                $("#btn-issue-edit").text("Update");
-                // Alert Code
-                $('#modal-issue-edit #AlertSuccess').removeClass('d-none');
-                setTimeout(function () {
-                    $('#modal-issue-edit #AlertSuccess').addClass('d-none');
-                }, 3000);
-                $("#modal-issue-edit #SuccessClose").click(function () { $('#modal-issue-edit #AlertSuccess').addClass('d-none'); });
 
+                $("#btn-gissue-edit").text("Update");
 
-                setTimeout(function () {
-                    $("#modal-issue-edit").modal('hide');
-                }, 3000);
+                $("#modal-issue-edit #notify").text(response);
+                $("#modal-issue-edit #notify").show();
+                setTimeout(function () { $("#modal-issue-edit #notify").hide(); $("#modal-issue-edit").modal('hide'); }, 1500);
+
+                // Refresh Table
+                $('#tblissueequipments').DataTable().ajax.reload();
 
             },
             error: function (xhr, status, error) {
@@ -492,10 +489,6 @@ $("#btn-issue-edit").click(function () {
         });
     }
 });
-
-$('#modal-issue-edit .btn-close').click(function () {
-
-    $('#modal-issue-edit').modal('hide');
 
 });
 

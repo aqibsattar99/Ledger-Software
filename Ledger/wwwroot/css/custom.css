@@ -43,3 +43,168 @@ table{
     color: #000 !important;
 }
 
+
+
+
+.sb-sidenav-menu {
+    background: #003600 !important;
+    color: white !important;
+}
+
+    .sb-sidenav-menu #collapseLayouts svg {
+        font-size: 12px !important;
+    }
+
+    .sb-sidenav-menu .nav-link, svg {
+        color: white !important;
+    }
+
+
+        .sb-sidenav-menu .nav-link:hover {
+            color: #003600 !important;
+            background: white !important;
+        }
+
+            .sb-sidenav-menu .nav-link:hover svg {
+                color: #003600 !important; /* Change the color to match the text color */
+            }
+
+
+
+#collapseLayouts a {
+    font-size: 15px !important;
+}
+
+#collapseLayouts .nav-link:hover {
+    color: #003600 !important;
+    background: white !important;
+}
+
+.sb-topnav {
+    background: #006600 !important;
+}
+
+#sidebarToggle {
+    background: white !important;
+    color: #006600 !important;
+}
+
+.sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-nested {
+    margin-left: 0px !important;
+}
+
+
+#sidebarToggle svg {
+    color: #006600 !important;
+}
+
+.sb-sidenav-footer {
+    background: #006600 !important;
+    color: white !important;
+}
+
+.btn-primary {
+    background: #006600 !important;
+    border-color: #006600 !important;
+}
+
+.btn-warning {
+    background: #003600 !important;
+    border-color: #003600 !important;
+}
+
+.ctm-login .dropdown-toggle::after {
+    visibility: hidden;
+}
+
+.ctm-login a {
+    color: white !important;
+    font-size: 16px !important;
+}
+
+.breadcrumb-item.active {
+    padding: 10px !important;
+    color: #006600 !important;
+}
+
+#myTable td, th {
+    text-align: left !important;
+}
+
+
+
+/* Setting Up Card Header Text */
+
+ .card-header h5{
+    padding-top: 8px !important;
+}
+ body {
+     background: #213122 !important;
+ }
+
+
+#notify {
+    background: green;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    display: none;
+}
+
+.table thead tr {
+    background: #006600 !important;
+    color: #fff;
+    text-align: left;
+}
+
+.table tbody tr td {
+    background: #282828 !important;
+    color: #fff !important;
+    text-align: left !important;
+}
+
+.table thead tr td:first-child {
+    width: 10% !important;
+    text-align: center !important;
+}
+
+.table tbody tr td:first-child {
+    width: 10% !important;
+    text-align: center !important;
+}
+
+
+#collapseLayouts a {
+    font-size: 13px !important;
+}
+
+
+input,select,textarea {
+    border: 2px solid #006600 !important;
+}
+
+.card-body label{
+    padding: 8px 0px 0px 0px !important;
+    font-weight: 600 !important;
+}
+
+
+#collapseLayouts .nav-link {
+    background: #006600 !important;
+    color: #fff;
+    font-size: 14px !important;
+}
+
+
+.select2-container {
+    width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 40px !important;
+    padding: 5px 0px 0px 0px;
+    border: 2px solid #006600 !important;
+}
+    .select2-container--default .select2-selection--single .select2-selection__arrow b{
+        margin-top: 5px !important;
+    }

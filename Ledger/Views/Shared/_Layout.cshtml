@@ -13,7 +13,7 @@
     <link href="css/custom.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 </head>
 <body class="sb-nav-fixed">
@@ -63,10 +63,22 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-code-branch"></i></div>
                             Branch
                         </a>
-                         <a class="nav-link" asp-controller="Issue" asp-action="index">
-                            <div class="sb-nav-link-icon"><i class="fas fa-outdent"></i></div>
+
+
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
                             Issue Equipment
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" asp-controller="generalissue" asp-action="index"> 
+                                    <span class="fas fa-chevron-right"></span> &nbsp; General Equipments</a>
+
+                            </nav>
+                        </div>
+
+
                           <a class="nav-link" asp-controller="Issue" asp-action="index">
                             <div class="sb-nav-link-icon">
                                 <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -74,19 +86,8 @@
                                 </div>
                             Logout 
                         </a>
-                        
 
-
-
-
-
-@* 
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            Layouts
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a> *@
-                       
+                      
 
 
 
@@ -110,13 +111,10 @@
 
 
             </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid px-4">
+            <footer class="">
+                <div class="container-fluid ">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; 2024</div>
-                        <div>
-                          
-                        </div>
+                        <p style="padding: 15px; color: white;"> Ledger Software - Developed By IT Branch </p>
                     </div>
                 </div>
             </footer>
@@ -134,11 +132,13 @@
     <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 
 
 
     <script src="js/custom.js"></script>
+    <script src="js/datatables.js"></script>
 </body>
 </html>
 

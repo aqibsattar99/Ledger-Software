@@ -6,47 +6,60 @@
     </ol>
 
     <div class="row">
-        <div class="col-sm-12">
-            <div class="card mb-4 ">
+
+        <div class="col-sm-5">
+            <div class="card mb-5">
                 <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-6">
-                        </div>
-                        <div class="col-md-6" style="text-align: right">
-                            <button class="btn btn-danger" data-toggle="modal" data-target="#modal-branch"> <i class="fas fa-plus"></i> Add </button>
-                            <button class="btn btn-success"><i class="fa fa-print"></i> Print</button>
-                        </div>
-                    </div>
+                    <h5><b>Add Branch</b></h5>
 
                 </div>
 
                 <div class="card-body">
-                    <table class="table table-responsive table-bordered" id="tblequipments">
+
+                    <div class="col-md-12">
+                        <p id="notify"></p>
+                        <label> Branch Name</label>
+                        <input class="form-control" id="name" type="text" placeholder="" />
+                    </div>
+
+                </div>
+
+                <div class="card-footer">
+                    <button type="button" class="btn btn-primary" id="btn-branch-add">Save </button>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="col-sm-7">
+
+            <div class="card mb-4 ">
+                <div class="card-header">
+                    <div class="row" style="text-align: right">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-6">
+
+                            <button class="btn btn-success"><i class="fa fa-print"></i> Print</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <table class="table table-responsive table-bordered" id="tblbranches">
                         <thead>
                             <tr>
                                 <th><center> No.</center> </th>
                                 <th> Name</th>
-                               
-                                <th> Created By</th>
+                             
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @{
-                                var SN = 0;
-                            }
-                            @foreach (var e in ViewBag.Branch)
-                            {
-                                SN++;
-                                <tr>
-
-                                    <td id="@e.Id" style="text-align:center;">@SN</td>
-                                    <td>@e.Name</td>
-                                   
-                                    <td>@e.CreatedBy</td>
-                                    <td><a class="btn btn-warning branch-edit-btn"><i class="fa fa-edit"></i> Edit</a></td>
-                                </tr>
-                            }
+                         
                         </tbody>
                     </table>
 
@@ -61,72 +74,13 @@
 
 
 
-<!-- Modal Add -->
-<div class="modal fade" id="modal-branch" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <h5 class="modal-title">Add Branch</h5>
-                <button class="btn-close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="form-floating mb-3 row">
-                    <div class="col-md-12">
-                        <div class="alert alert-warning alert-dismissible fade show d-none" id="AlertWarning" role="alert">
-                            Please Fill all Fields !!!
-                            <button type="button" class="btn-close" id="WarningClose">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="alert alert-danger alert-dismissible fade show d-none" id="AlertError" role="alert">
-                            System Error !!!
-                            <button type="button" class="btn-close" id="ErrorClose">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="alert alert-success alert-dismissible fade show d-none" id="AlertSuccess" role="alert">
-                            Equipment Added Successfully !!!
-                            <button type="button" class="btn-close" id="SuccessClose">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-md-12">
-                        <label> Name</label>
-                        <input class="form-control" id="name" type="text" placeholder="" />
-                    </div>
-
-
-
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn-branch-add">Save </button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
 <!-- Modal Edit -->
 <div class="modal fade" id="modal-branch-edit" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
 
-                <h5 class="modal-title">Edit Branch</h5>
+                <h5 class="modal-title"><b>Edit Branch</b></h5>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -137,38 +91,13 @@
             <div class="modal-body">
 
                 <div class="form-floating mb-3 row">
-                    <div class="col-md-12">
-                        <div class="alert alert-warning alert-dismissible fade show d-none" id="AlertWarning" role="alert">
-                            Please Fill all Fields !!!
-                            <button type="button" class="btn-close" id="WarningClose">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="alert alert-danger alert-dismissible fade show d-none" id="AlertError" role="alert">
-                            System Error !!!
-                            <button type="button" class="btn-close" id="ErrorClose">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="alert alert-success alert-dismissible fade show d-none" id="AlertSuccess" role="alert">
-                            Branch Updated Successfully !!!
-                            <button type="button" class="btn-close" id="SuccessClose">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-
-
-
-                    </div>
-
+                  
 
                     <div class="col-md-12">
+                        <p id="notify"></p>
                         <label> Name</label>
                         <input class="form-control" id="branchid" type="hidden" placeholder="" />
                         <input class="form-control" id="name" type="text" placeholder="" />
-
 
                     </div>
 

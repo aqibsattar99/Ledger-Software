@@ -15,7 +15,7 @@ builder.Services.AddDbContext<ApplicationDB>
     (builder.Configuration.GetConnectionString
     ("DB")));
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 
 var app = builder.Build();
@@ -36,6 +36,6 @@ app.UseRotativa();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Dashboard}/{action=Index}/{id?}");
+    pattern: "{controller=Equipment}/{action=Index}/{id?}");
 
 app.Run();

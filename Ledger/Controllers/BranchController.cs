@@ -10,10 +10,12 @@ namespace Ledger.Controllers
     public class BranchController : Controller
     {
         private readonly IGenericRepository<Branch> dbcontext;
+        private readonly ApplicationDB _db;
 
-        public BranchController(IGenericRepository<Branch> db)
+        public BranchController(IGenericRepository<Branch> repo, ApplicationDB db)
         {
-            dbcontext = db;
+            dbcontext = repo;
+            _db = db;
         }
         public IActionResult Index()
         {
@@ -21,14 +23,25 @@ namespace Ledger.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult GetAll()
+
+        {
+            var Data = _db.Branch.Where(e => e.Status == true)
+                                       .OrderByDescending(e => e.CreatedOn)
+                                       .ToList();
+
+            return Json(new { data = Data });
+
+
+
+        }
 
         [HttpPost]
         public IActionResult Create(Branch B)
         {
             B.CreatedOn = DateTime.Now;
             B.CreatedBy = "Aqib";
-            B.EditedOn = DateTime.Now;
-            B.EditedBy = "Aqib";
             B.Status = true;
 
             dbcontext.AddAsync(B);
